@@ -5,24 +5,28 @@ if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $query = "SELECT * FROM akun WHERE username = '$username' AND password = '$password'";
+    $query = "SELECT * FROM akun WHERE username = '$username'";
     $result = mysqli_query($connection, $query);
 
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
+        if(password_verify($password, $row['password'])){
         $_SESSION['username'] = $username;
         $_SESSION['id'] = $row['id'];
         if ($row['is_admin'] == true or $row['is_admin'] == 1) {
-            $_SESSION['is_admin'] = true;
-            header('Location: ../admin/index.php');
-            exit();
-        } else {
-            $_SESSION['is_admin'] = false;
-            header('Location: ../index.php');
-            exit();
+                $_SESSION['is_admin'] = true;
+                header('Location: ../admin/index.php');
+                exit();
+            } else {
+                $_SESSION['is_admin'] = false;
+                header('Location: ../index.php');
+                exit();
+            }
+        }else{
+            $error = "Password salah";
         }
     } else {
-        $error = "Username atau password salah";
+        $error = "Username tidak ditemukan";
     }
 }
 ?>

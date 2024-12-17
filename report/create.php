@@ -1,11 +1,10 @@
 <?php
 require_once '../service/database.php';
-
+session_start();
+if(!isset($_SESSION['id'])){
+    header('location: ../auth/login.php');
+}
 if (isset($_POST['submit'])) {
-    session_start();
-    if(!isset($_SESSION['id'])){
-        header('location: ../auth/login.php');
-    }
     $isi_laporan = $_POST['isi_laporan'];
 
     $query = "INSERT INTO report (isi_laporan, akun_id) VALUES ('$isi_laporan', $_SESSION[id])";

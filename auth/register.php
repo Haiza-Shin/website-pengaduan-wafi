@@ -3,7 +3,7 @@ require_once '../service/database.php';
 
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     // Validation
     $errors = [];
